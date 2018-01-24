@@ -68,7 +68,10 @@ class Picker extends Component {
             ]}>
 
             <Text
-              style={theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite}>
+              style={[
+                theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+                this.props.styles.label,
+              ]}>
               {
                 labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
               }
@@ -79,6 +82,7 @@ class Picker extends Component {
               style={[
                 styles.dropDownImage,
                 styles.marginLeft5,
+                this.props.styles.icon,
               ]}
               />
 
@@ -116,10 +120,15 @@ Picker.propTypes = {
     PropTypes.number.isRequired,
   ]),
   theme: PropTypes.number,
+  styles: PropTypes.shape({
+    icon: PropTypes.number,
+    label: PropTypes.number,
+  }),
 };
 
 Picker.defaultProps = {
   theme: THEMES.LIGHT,
+  styles: {},
 };
 
 
