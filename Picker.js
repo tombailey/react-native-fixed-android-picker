@@ -6,7 +6,7 @@ import {
   NativeModules,
   View,
   Text,
-  TouchableHighlight,
+  TouchableNativeFeedback,
   Image,
 } from 'react-native';
 
