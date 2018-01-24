@@ -47,7 +47,8 @@ class Picker extends Component {
     return (
       <View
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
-        <TouchableHighlight
+        <TouchableNativeFeedback
+          underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={[
             styles.flexDirectionRow,
             styles.padding5,
@@ -83,7 +84,7 @@ class Picker extends Component {
 
           </View>
 
-        </TouchableHighlight>
+        </TouchableNativeFeedback>
       </View>
     );
   }
