@@ -49,10 +49,7 @@ class Picker extends Component {
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
         <TouchableNativeFeedback
           underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
-          style={[
-            styles.flexDirectionRow,
-            styles.padding5,
-          ]}
+          style={styles.padding5}
           onPress={() => {
             NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
               this.setState({
