@@ -6,7 +6,7 @@ import {
   NativeModules,
   View,
   Text,
-  TouchableHighlight,
+  TouchableNativeFeedback,
   Image,
 } from 'react-native';
 
@@ -47,11 +47,9 @@ class Picker extends Component {
     return (
       <View
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
-        <TouchableHighlight
-          style={[
-            styles.flexDirectionRow,
-            styles.padding5,
-          ]}
+        <TouchableNativeFeedback
+          underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
+          style={styles.padding5}
           onPress={() => {
             NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
               this.setState({
@@ -66,11 +64,14 @@ class Picker extends Component {
           <View
             style={[
               styles.flexDirectionRow,
-              styles.justifyContentCenter,
+              styles.alignItemsCenter,
             ]}>
 
             <Text
-              style={theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite}>
+              style={[
+                theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+                this.props.styles.label,
+              ]}>
               {
                 labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
               }
@@ -78,12 +79,16 @@ class Picker extends Component {
 
             <Image
               source={dropDownImageSource}
-              style={styles.dropdownImage}
+              style={[
+                styles.dropDownImage,
+                styles.marginLeft5,
+                this.props.styles.icon,
+              ]}
               />
 
           </View>
 
-        </TouchableHighlight>
+        </TouchableNativeFeedback>
       </View>
     );
   }
@@ -115,10 +120,15 @@ Picker.propTypes = {
     PropTypes.number.isRequired,
   ]),
   theme: PropTypes.number,
+  styles: PropTypes.shape({
+    icon: PropTypes.number,
+    label: PropTypes.number,
+  }),
 };
 
 Picker.defaultProps = {
   theme: THEMES.LIGHT,
+  styles: {},
 };
 
 

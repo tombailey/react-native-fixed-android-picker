@@ -6,8 +6,8 @@ export default StyleSheet.create({
   flexDirectionRow: {
     flexDirection: 'row',
   },
-  justifyContentCenter: {
-    justifyContent: 'center',
+  alignItemsCenter: {
+    alignItems: 'center',
   },
   backgroundWhite: {
     backgroundColor: '#FFFFFF',
@@ -21,11 +21,14 @@ export default StyleSheet.create({
   fontBlack: {
     color: '#000000',
   },
+  marginLeft5: {
+    marginLeft: 5,
+  },
   padding5: {
     padding: 5,
   },
-  dropdownImage: {
-    height: 20,
-    width: 20,
+  dropDownImage: {
+    height: 5,
+    width: 10,
   },
 });

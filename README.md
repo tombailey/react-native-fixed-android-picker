@@ -16,15 +16,13 @@ react-native link
 ```
 
 ## Example usage
-```javascript
 
+```javascript
 import React, {
   Component,
 } from 'react';
 
-import Picker, {
-  Themes,
-} from 'react-native-fixed-android-picker';
+import Picker from 'react-native-fixed-android-picker';
 
 class SomeComponent extends Component {
   constructor(props) {
@@ -48,7 +46,6 @@ class SomeComponent extends Component {
 
   render() {
     <Picker
-      theme={Themes.DARK}
       selectedValue={this.state.selectedValue}
       items={this.fruitItems}
       onValueChange={(fruitItem, index) => {
@@ -58,7 +55,6 @@ class SomeComponent extends Component {
       }} />
   }
 }
-
 ```
 
 ## Custom styling
@@ -68,7 +64,39 @@ This picker is made of a few components which makes it difficult to support cust
   - you would likely need to pass style props for each of those components
   - the native Android dialog shown with the picker's options needs to be themed natively
 
-For the reasons above, we recommend either using one of predefined themes (Themes.DARK or Themes.LIGHT) or taking a fork of this library and changing it how you wish.
+We have provided support for passing a styles prop which can change how the label and icon for the picker look:
+
+```javascript
+<Picker
+  items={this.fruitItems}
+  ...
+  styles={{
+    label: {
+      backgroundColor: '#FF0000',
+      fontSize: 20,
+    },
+    icon: {
+      backgroundColor: '#00FF00',
+      marginLeft: 100,
+    },
+  }} />
+```
+
+We have also provided support for two predefined themes (Themes.DARK or Themes.LIGHT):
+```javascript
+import Picker, {
+  Themes,
+} from 'react-native-fixed-android-picker';
+
+...
+
+<Picker
+  items={this.fruitItems}
+  ...
+  theme={Themes.DARK} />
+```
+
+If neither of these options work for you, feel free to take a fork of this library and change it how you wish.
 
 ## License
 
