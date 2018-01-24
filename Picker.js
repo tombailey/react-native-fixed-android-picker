@@ -1,0 +1,128 @@
+import React, {
+  Component
+} from 'react';
+import PropTypes from 'prop-types';
+import {
+  NativeModules,
+  View,
+  Text,
+  TouchableHighlight,
+  Image,
+} from 'react-native';
+
+import styles from './styles';
+
+import dropDownImageWhite from './drop-down-arrow-white.png';
+import dropDownImageBlack from './drop-down-arrow-black.png';
+
+
+const THEMES = {
+  LIGHT: 0,
+  DARK: 1,
+};
+
+
+class Picker extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {};
+  }
+
+  render() {
+    const theme = this.props.theme;
+
+    var dropDownImageSource;
+    if (this.props.dropDownImageSource) {
+      dropDownImageSource = this.props.dropDownImageSource;
+    } else if (theme == THEMES.LIGHT) {
+      dropDownImageSource = dropDownImageBlack;
+    } else {
+      dropDownImageSource = dropDownImageWhite;
+    }
+
+    const items = this.props.items;
+    const labels = this.getLabels(items);
+    const values = this.getValues(items);
+
+    return (
+      <View
+        style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
+        <TouchableHighlight
+          style={[
+            styles.flexDirectionRow,
+            styles.padding5,
+          ]}
+          onPress={() => {
+            NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
+              this.setState({
+                selectedValue: values[index],
+              });
+              this.props.onValueChange(values[index], index);
+            }).catch((error) => {
+              //dialog closed
+            });
+          }}>
+
+          <View
+            style={[
+              styles.flexDirectionRow,
+              styles.justifyContentCenter,
+            ]}>
+
+            <Text
+              style={theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite}>
+              {
+                labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
+              }
+            </Text>
+
+            <Image
+              source={dropDownImageSource}
+              style={styles.dropdownImage}
+              />
+
+          </View>
+
+        </TouchableHighlight>
+      </View>
+    );
+  }
+
+  getLabels(items) {
+    return items.map((item) => {
+      return item.label;
+    });
+  }
+
+  getValues(items) {
+    return items.map((item) => {
+      return item.value;
+    });
+  }
+}
+
+Picker.propTypes = {
+  selectedValue: PropTypes.string.isRequired,
+  items: PropTypes.arrayOf(PropTypes.shape({
+    label: PropTypes.string.isRequired,
+    value: PropTypes.string.isRequired,
+  })).isRequired,
+  onValueChange: PropTypes.func.isRequired,
+  dropDownImageSource: PropTypes.oneOfType([
+    PropTypes.shape({
+      uri: PropTypes.string.isRequired,
+    }).isRequired,
+    PropTypes.number.isRequired,
+  ]),
+  theme: PropTypes.number,
+};
+
+Picker.defaultProps = {
+  theme: THEMES.LIGHT,
+};
+
+
+export {
+  THEMES as Themes,
+};
+export default Picker;

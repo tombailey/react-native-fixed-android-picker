@@ -1,4 +1,4 @@
-package com.burnweb.rnsimplealertdialog;
+package me.tombailey.fixedandroidpicker;
 
 import android.app.Activity;
 
@@ -10,15 +10,15 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
-public class RNSimpleAlertDialogPackage implements ReactPackage {
+public class FixedAndroidPickerPackage implements ReactPackage {
 
-    public RNSimpleAlertDialogPackage() {}
-    public RNSimpleAlertDialogPackage(Activity activity) {}
+    public FixedAndroidPickerPackage() {}
+    public FixedAndroidPickerPackage(Activity activity) {}
 
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new RNSimpleAlertDialogModule(reactContext));
+        modules.add(new FixedAndroidPickerModule(reactContext));
         return modules;
     }
 

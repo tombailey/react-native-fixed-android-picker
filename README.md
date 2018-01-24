@@ -1,82 +1,75 @@
-# react-native-simpledialog-android
-React Native Android module to use Android's AlertDialog - same idea of AlertIOS
+# react-native-fixed-android-picker
+A React Native Android module to work around the ['Android Picker not consistently firing onValueChange()' issue](https://github.com/facebook/react-native/issues/15556#issuecomment-359478181).
 
-[![npm version](http://img.shields.io/npm/v/react-native-simpledialog-android.svg?style=flat-square)](https://npmjs.org/package/react-native-simpledialog-android "View this project on npm")
-[![npm downloads](http://img.shields.io/npm/dm/react-native-simpledialog-android.svg?style=flat-square)](https://npmjs.org/package/react-native-simpledialog-android "View this project on npm")
-[![npm licence](http://img.shields.io/npm/l/react-native-simpledialog-android.svg?style=flat-square)](https://npmjs.org/package/react-native-simpledialog-android "View this project on npm")
+## Installation
 
-
-### Installation
+We aren't on the NPM registry yet so:
 
 ```bash
-npm install react-native-simpledialog-android --save
+npm install github:tombailey/react-native-fixed-android-picker --save
 ```
 
-### Add it to your android project
+Link the native modules:
 
-* In `android/settings.gradle`
-
-```gradle
-...
-include ':RNSimpleAlertDialogModule', ':app'
-project(':RNSimpleAlertDialogModule').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-simpledialog-android/android')
+```bash
+react-native link
 ```
 
-* In `android/app/build.gradle`
+## Example usage
+```javascript
 
-```gradle
-...
-dependencies {
-    ...
-    compile project(':RNSimpleAlertDialogModule')
-}
-```
+import React, {
+  Component,
+} from 'react';
 
-* Register Module >= 0.17 && <= 0.29(in ```MainActivity.java```)
-* NOTE: >= RN 29 split ```MainActivity.java``` into ```MainActivity.java``` and
-  ```MainApplication.java```.  So make modifications below to ```MainApplication.java```
+import Picker, {
+  Themes,
+} from 'react-native-fixed-android-picker';
 
-```java
-import com.burnweb.rnsimplealertdialog.RNSimpleAlertDialogPackage;  // <--- import
+class SomeComponent extends Component {
+  constructor(props) {
+    super(props);
 
-public class MainApplication extends Application implements ReactApplication {
-  ......
+    this.fruitItems = [{
+      label: 'Apples',
+      value: 'app',
+    }, {
+      label: 'Bananas',
+      value: 'ban',
+    }, {
+      label: 'Mangos',
+      value: 'man',
+    }];
 
-  @Override
-  protected List<ReactPackage> getPackages() {
-    return Arrays.<ReactPackage>asList(
-            new MainReactPackage(),
-            new RNSimpleAlertDialogPackage()); // <------ add this line to your MainApplication class
+    this.state = {
+      selectedValue: fruitItems[0].value,
+    };
   }
 
-  ......
-
+  render() {
+    <Picker
+      theme={Themes.DARK}
+      selectedValue={this.state.selectedValue}
+      items={this.fruitItems}
+      onValueChange={(fruitItem, index) => {
+        this.setState({
+          selectedValue: fruitItem.value,
+        })
+      }} />
+  }
 }
+
 ```
 
-## Usage
-This module are very similar to [AlertIOS](https://facebook.github.io/react-native/docs/alertios.html) native module, and only works with **alert** method *(prompt method aren't implemented yet)*.
+## Custom styling
 
-The main difference are in the way that you declare buttons. In Android you can declare **up to 3 buttons** and in this module you have to declare what **type** the button is.
-A button can be **SimpleAlert.POSITIVE_BUTTON**, **SimpleAlert.NEGATIVE_BUTTON** or **SimpleAlert.NEUTRAL_BUTTON**.
+This picker is made of a few components which makes it difficult to support custom styling since:
+  - you would need to know what each component does
+  - you would likely need to pass style props for each of those components
+  - the native Android dialog shown with the picker's options needs to be themed natively
 
-## Example
-```javascript
-var SimpleAlert = require('react-native-simpledialog-android');
-
-function _onPress(event) {
-    console.log(event);
-};
-
-SimpleAlert.alert(
-    'Please read me!',
-    'Want a warning alert?', [
-      { type: SimpleAlert.POSITIVE_BUTTON, text: 'Yes', onPress: _onPress },
-      { type: SimpleAlert.NEGATIVE_BUTTON, text: 'No', onPress: _onPress },
-      { type: SimpleAlert.NEUTRAL_BUTTON, text: 'Neutral', onPress: _onPress },
-    ]
-);
-```
+For the reasons above, we recommend either using one of predefined themes (Themes.DARK or Themes.LIGHT) or taking a fork of this library and changing it how you wish.
 
 ## License
+
 MIT
