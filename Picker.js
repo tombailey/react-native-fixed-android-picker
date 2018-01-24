@@ -64,7 +64,7 @@ class Picker extends Component {
           <View
             style={[
               styles.flexDirectionRow,
-              styles.justifyContentCenter,
+              styles.alignItemsCenter,
             ]}>
 
             <Text
@@ -76,7 +76,10 @@ class Picker extends Component {
 
             <Image
               source={dropDownImageSource}
-              style={styles.dropdownImage}
+              style={[
+                styles.dropDownImage,
+                styles.marginLeft5,
+              ]}
               />
 
           </View>
