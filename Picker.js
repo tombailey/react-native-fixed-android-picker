@@ -28,6 +28,19 @@ class Picker extends Component {
     this.state = {};
   }
 
+  onPressPickerHeader() {
+    NativeModules.FixedAndroidPicker.showPickerDialog(labels)
+      .then(index => {
+        this.setState({
+            selectedValue: values[index]
+        });
+        this.props.onValueChange(values[index], index);
+      })
+      .catch(error => {
+        //dialog closed
+      });
+  }
+
   render() {
     const theme = this.props.theme;
 
@@ -44,22 +57,26 @@ class Picker extends Component {
     const labels = this.getLabels(items);
     const values = this.getValues(items);
 
+    if (this.props.PickerHeaderComponent) {
+      return (
+        <TouchableNativeFeedback
+            underlayColor={theme == THEMES.LIGHT ? "#FFFFFF" : "#000000"}
+            onPress={() => this.onPressPickerHeader()}
+        >
+          <View>
+            {this.props.PickerHeaderComponent}
+          </View>
+        </TouchableNativeFeedback>
+      );
+    }
+
     return (
       <View
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
         <TouchableNativeFeedback
           underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={styles.padding5}
-          onPress={() => {
-            NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
-              this.setState({
-                selectedValue: values[index],
-              });
-              this.props.onValueChange(values[index], index);
-            }).catch((error) => {
-              //dialog closed
-            });
-          }}>
+          onPress={() => this.onPressPickerHeader()}>
 
           <View
             style={[
