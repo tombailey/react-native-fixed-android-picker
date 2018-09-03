@@ -28,7 +28,7 @@ class Picker extends Component {
     this.state = {};
   }
 
-  onPressPickerHeader() {
+  onPressPickerHeader(values, labels) {
     NativeModules.FixedAndroidPicker.showPickerDialog(labels)
       .then(index => {
         this.setState({
@@ -61,7 +61,7 @@ class Picker extends Component {
       return (
         <TouchableNativeFeedback
             underlayColor={theme == THEMES.LIGHT ? "#FFFFFF" : "#000000"}
-            onPress={() => this.onPressPickerHeader()}
+            onPress={() => this.onPressPickerHeader(values, labels)}
         >
           <View>
             {this.props.PickerHeaderComponent}
@@ -76,7 +76,7 @@ class Picker extends Component {
         <TouchableNativeFeedback
           underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={styles.padding5}
-          onPress={() => this.onPressPickerHeader()}>
+          onPress={() => this.onPressPickerHeader(values, labels)}>
 
           <View
             style={[
@@ -141,6 +141,7 @@ Picker.propTypes = {
     icon: PropTypes.number,
     label: PropTypes.number,
   }),
+  PickerHeaderComponent: PropTypes.element
 };
 
 Picker.defaultProps = {
