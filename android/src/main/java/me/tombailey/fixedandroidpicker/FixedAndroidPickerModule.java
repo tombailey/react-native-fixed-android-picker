@@ -28,7 +28,7 @@ public class FixedAndroidPickerModule extends ReactContextBaseJavaModule {
     @ReactMethod
     public void showPickerDialog(ReadableArray labelsReadableArray, final Promise promise) {
         final String[] labels = getLabels(labelsReadableArray);
-        AlertDialog alertDialog = AlertDialog.Builder(getCurrentActivity())
+        AlertDialog alertDialog = new AlertDialog.Builder(getCurrentActivity())
             .setItems(labels, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int itemIndex) {
