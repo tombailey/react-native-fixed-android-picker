@@ -42,15 +42,6 @@ class Picker extends Component {
   render() {
     const theme = this.props.theme;
 
-    var dropDownImageSource;
-    if (this.props.dropDownImageSource) {
-      dropDownImageSource = this.props.dropDownImageSource;
-    } else if (theme == THEMES.LIGHT) {
-      dropDownImageSource = dropDownImageBlack;
-    } else {
-      dropDownImageSource = dropDownImageWhite;
-    }
-
     const items = this.props.items;
     const labels = this.getLabels(items);
     const values = this.getValues(items);
@@ -95,7 +86,7 @@ class Picker extends Component {
         </Text>
 
         <Image
-          source={dropDownImageSource}
+          source={this.getDropDownSource()}
           style={[
             styles.dropDownImage,
             styles.marginLeft5,
@@ -104,6 +95,18 @@ class Picker extends Component {
           />
       </View>
     );
+  }
+
+  getDropDownSource() {
+    let dropDownImageSource;
+    if (this.props.dropDownImageSource) {
+      dropDownImageSource = this.props.dropDownImageSource;
+    } else if (theme == THEMES.LIGHT) {
+      dropDownImageSource = dropDownImageBlack;
+    } else {
+      dropDownImageSource = dropDownImageWhite;
+    }
+    return dropDownImageSource;
   }
 
   getLabels(items) {
