@@ -69,7 +69,7 @@ class Picker extends Component {
           }}>
 
             {
-              this.renderDropDown(labels)
+              this.renderDropDown(labels, values)
             }
 
         </TouchableNativeFeedback>
@@ -77,7 +77,7 @@ class Picker extends Component {
     );
   }
 
-  renderDropDown(labels) {
+  renderDropDown(labels, values) {
     return (
       <View
         style={[
