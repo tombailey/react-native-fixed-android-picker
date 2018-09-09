@@ -59,12 +59,23 @@ class SomeComponent extends Component {
 
 ## Custom styling
 
-This picker is made of a few components which makes it difficult to support custom styling since:
-  - you would need to know what each component does
-  - you would likely need to pass style props for each of those components
-  - the native Android dialog shown with the picker's options needs to be themed natively
+Custom styling is difficult because this library uses a mixture of React Native views and Android native dialogs
 
-We have provided support for passing a styles prop which can change how the label and icon for the picker look:
+The simplest custom styling can be applied by using one of our predefined themes (Themes.DARK or Themes.LIGHT):
+```javascript
+import Picker, {
+  Themes,
+} from 'react-native-fixed-android-picker';
+
+...
+
+<Picker
+  items={this.fruitItems}
+  ...
+  theme={Themes.DARK} />
+```
+
+Alternatively, we have provided support for passing a styles prop which can change how the label and icon for the dropdown look:
 
 ```javascript
 <Picker
@@ -82,21 +93,26 @@ We have provided support for passing a styles prop which can change how the labe
   }} />
 ```
 
-We have also provided support for two predefined themes (Themes.DARK or Themes.LIGHT):
+Or you can even render your own custom view for the dropdown:
 ```javascript
-import Picker, {
-  Themes,
-} from 'react-native-fixed-android-picker';
+const renderCustomView = (labels, values) => {
+  //TODO: do something with the labels
+  return (
+    <View />
+  );
+};
 
 ...
 
-<Picker
-  items={this.fruitItems}
-  ...
-  theme={Themes.DARK} />
+const picker = (
+  <Picker
+    items={this.fruitItems}
+    ...
+    renderDropDown={renderCustomView} />
+)
 ```
 
-If neither of these options work for you, feel free to take a fork of this library and change it how you wish.
+If none of these options work for you, feel free to take a fork of this library and change it how you wish.
 
 ## License
 

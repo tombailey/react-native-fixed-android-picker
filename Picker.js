@@ -28,69 +28,87 @@ class Picker extends Component {
     this.state = {};
   }
 
+  onPressPicker(values, labels) {
+    NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
+      this.setState({
+        selectedValue: values[index],
+      });
+      this.props.onValueChange(values[index], index);
+    }).catch((error) => {
+      //dialog closed
+    });
+  }
+
   render() {
-    const theme = this.props.theme;
-
-    var dropDownImageSource;
-    if (this.props.dropDownImageSource) {
-      dropDownImageSource = this.props.dropDownImageSource;
-    } else if (theme == THEMES.LIGHT) {
-      dropDownImageSource = dropDownImageBlack;
-    } else {
-      dropDownImageSource = dropDownImageWhite;
-    }
-
     const items = this.props.items;
     const labels = this.getLabels(items);
     const values = this.getValues(items);
 
+    const renderDropDown = this.props.renderDropDown ?
+      this.props.renderDropDown : this.renderDropDown;
+
     return (
       <View
-        style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
+        style={this.getTheme() == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
         <TouchableNativeFeedback
-          underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
+          underlayColor={this.getTheme() == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={styles.padding5}
           onPress={() => {
-            NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
-              this.setState({
-                selectedValue: values[index],
-              });
-              this.props.onValueChange(values[index], index);
-            }).catch((error) => {
-              //dialog closed
-            });
+            this.onPressPicker(values, labels);
           }}>
 
-          <View
-            style={[
-              styles.flexDirectionRow,
-              styles.alignItemsCenter,
-            ]}>
-
-            <Text
-              style={[
-                theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
-                this.props.styles.label,
-              ]}>
-              {
-                labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
-              }
-            </Text>
-
-            <Image
-              source={dropDownImageSource}
-              style={[
-                styles.dropDownImage,
-                styles.marginLeft5,
-                this.props.styles.icon,
-              ]}
-              />
-
-          </View>
+            {
+              renderDropDown(labels, values)
+            }
 
         </TouchableNativeFeedback>
       </View>
     );
+  }
+
+  getTheme() {
+    return this.props.theme;
+  }
+
+  renderDropDown(labels, values) {
+    return (
+      <View
+        style={[
+          styles.flexDirectionRow,
+          styles.alignItemsCenter,
+        ]}>
+          <Text
+            style={[
+              this.props.theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+              this.props.styles.label,
+            ]}>
+            {
+              labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
+            }
+        </Text>
+
+        <Image
+          source={this.getDropDownSource()}
+          style={[
+            styles.dropDownImage,
+            styles.marginLeft5,
+            this.props.styles.icon,
+          ]}
+          />
+      </View>
+    );
+  }
+
+  getDropDownSource() {
+    let dropDownImageSource;
+    if (this.props.dropDownImageSource) {
+      dropDownImageSource = this.props.dropDownImageSource;
+    } else if (this.getTheme() == THEMES.LIGHT) {
+      dropDownImageSource = dropDownImageBlack;
+    } else {
+      dropDownImageSource = dropDownImageWhite;
+    }
+    return dropDownImageSource;
   }
 
   getLabels(items) {
@@ -124,6 +142,7 @@ Picker.propTypes = {
     icon: PropTypes.number,
     label: PropTypes.number,
   }),
+  renderDropDown: PropTypes.func,
 };
 
 Picker.defaultProps = {
