@@ -40,8 +40,6 @@ class Picker extends Component {
   }
 
   render() {
-    const theme = this.props.theme;
-
     const items = this.props.items;
     const labels = this.getLabels(items);
     const values = this.getValues(items);
@@ -51,9 +49,9 @@ class Picker extends Component {
 
     return (
       <View
-        style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
+        style={this.getTheme() == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
         <TouchableNativeFeedback
-          underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
+          underlayColor={this.getTheme() == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={styles.padding5}
           onPress={() => {
             this.onPressPicker(values, labels);
@@ -66,6 +64,10 @@ class Picker extends Component {
         </TouchableNativeFeedback>
       </View>
     );
+  }
+
+  getTheme() {
+    return this.props.theme;
   }
 
   renderDropDown(labels, values) {
@@ -101,7 +103,7 @@ class Picker extends Component {
     let dropDownImageSource;
     if (this.props.dropDownImageSource) {
       dropDownImageSource = this.props.dropDownImageSource;
-    } else if (theme == THEMES.LIGHT) {
+    } else if (this.getTheme() == THEMES.LIGHT) {
       dropDownImageSource = dropDownImageBlack;
     } else {
       dropDownImageSource = dropDownImageWhite;
