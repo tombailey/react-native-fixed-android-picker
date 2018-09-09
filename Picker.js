@@ -28,17 +28,15 @@ class Picker extends Component {
     this.state = {};
   }
 
-  onPressPickerHeader(values, labels) {
-    NativeModules.FixedAndroidPicker.showPickerDialog(labels)
-      .then(index => {
-        this.setState({
-            selectedValue: values[index]
-        });
-        this.props.onValueChange(values[index], index);
-      })
-      .catch(error => {
-        //dialog closed
+  onPressPicker(values, labels) {
+    NativeModules.FixedAndroidPicker.showPickerDialog(labels).then((index) => {
+      this.setState({
+        selectedValue: values[index],
       });
+      this.props.onValueChange(values[index], index);
+    }).catch((error) => {
+      //dialog closed
+    });
   }
 
   render() {
@@ -57,26 +55,15 @@ class Picker extends Component {
     const labels = this.getLabels(items);
     const values = this.getValues(items);
 
-    if (this.props.PickerHeaderComponent) {
-      return (
-        <TouchableNativeFeedback
-            underlayColor={theme == THEMES.LIGHT ? "#FFFFFF" : "#000000"}
-            onPress={() => this.onPressPickerHeader(values, labels)}
-        >
-          <View>
-            {this.props.PickerHeaderComponent}
-          </View>
-        </TouchableNativeFeedback>
-      );
-    }
-
     return (
       <View
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
         <TouchableNativeFeedback
           underlayColor={theme == THEMES.LIGHT ? '#FFFFFF' : '#000000'}
           style={styles.padding5}
-          onPress={() => this.onPressPickerHeader(values, labels)}>
+          onPress={() => {
+            this.onPressPicker(values, labels);
+          }}>
 
           <View
             style={[
@@ -84,29 +71,45 @@ class Picker extends Component {
               styles.alignItemsCenter,
             ]}>
 
-            <Text
-              style={[
-                theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
-                this.props.styles.label,
-              ]}>
-              {
-                labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
-              }
-            </Text>
-
-            <Image
-              source={dropDownImageSource}
-              style={[
-                styles.dropDownImage,
-                styles.marginLeft5,
-                this.props.styles.icon,
-              ]}
-              />
+            {
+              this.renderPickerComponent()
+            }
 
           </View>
 
         </TouchableNativeFeedback>
       </View>
+    );
+  }
+
+  renderPickerComponent() {
+    if (this.props.dropDownComponent) {
+      return this.props.dropDownComponent;
+    } else {
+      return this.getDefaultPickerComponent();
+    }
+  }
+
+  getDefaultPickerComponent() {
+    return (
+      <Text
+        style={[
+          theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+          this.props.styles.label,
+        ]}>
+        {
+          labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
+        }
+    </Text>
+
+    <Image
+      source={dropDownImageSource}
+      style={[
+        styles.dropDownImage,
+        styles.marginLeft5,
+        this.props.styles.icon,
+      ]}
+      />
     );
   }
 
@@ -141,7 +144,7 @@ Picker.propTypes = {
     icon: PropTypes.number,
     label: PropTypes.number,
   }),
-  PickerHeaderComponent: PropTypes.element
+  dropDownComponent: PropTypes.element,
 };
 
 Picker.defaultProps = {
