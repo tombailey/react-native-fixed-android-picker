@@ -103,7 +103,7 @@ class Picker extends Component {
         ]}>
           <Text
             style={[
-              theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+              this.props.theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
               this.props.styles.label,
             ]}>
             {
