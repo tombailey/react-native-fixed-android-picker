@@ -55,6 +55,9 @@ class Picker extends Component {
     const labels = this.getLabels(items);
     const values = this.getValues(items);
 
+    const renderDropDown = this.props.renderDropDown ?
+      this.props.renderDropDown : this.renderDropDown;
+
     return (
       <View
         style={theme == THEMES.LIGHT ? styles.backgroundWhite : styles.backgroundBlack}>
@@ -66,7 +69,7 @@ class Picker extends Component {
           }}>
 
             {
-              this.renderPickerComponent()
+              this.renderDropDown(labels)
             }
 
         </TouchableNativeFeedback>
@@ -74,27 +77,7 @@ class Picker extends Component {
     );
   }
 
-  renderPickerComponent() {
-    if (this.props.dropDownComponent) {
-      return (
-        <View
-          style={[
-            styles.flexDirectionRow,
-            styles.alignItemsCenter,
-          ]}>
-
-          {
-            this.props.dropDownComponent
-          }
-
-        </View>
-      );
-    } else {
-      return this.getDefaultPickerComponent();
-    }
-  }
-
-  getDefaultPickerComponent() {
+  renderDropDown(labels) {
     return (
       <View
         style={[
@@ -119,7 +102,7 @@ class Picker extends Component {
             this.props.styles.icon,
           ]}
           />
-        </View>
+      </View>
     );
   }
 
@@ -154,7 +137,7 @@ Picker.propTypes = {
     icon: PropTypes.number,
     label: PropTypes.number,
   }),
-  dropDownComponent: PropTypes.element,
+  renderDropDown: PropTypes.func,
 };
 
 Picker.defaultProps = {

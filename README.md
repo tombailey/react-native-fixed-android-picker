@@ -93,13 +93,14 @@ Alternatively, we have provided support for passing a styles prop which can chan
   }} />
 ```
 
-Or you can even provide your own custom view for the dropdown:
+Or you can even render your own custom view for the dropdown:
 ```javascript
-const customView = (
-  <View>
-    ...
-  </View>
-);
+const renderCustomView = (labels) => {
+  //TODO: do something with the labels
+  return (
+    <View />
+  );
+};
 
 ...
 
@@ -107,7 +108,7 @@ const picker = (
   <Picker
     items={this.fruitItems}
     ...
-    dropDownComponent={customView} />
+    renderDropDown={renderCustomView} />
 )
 ```
 
