@@ -65,17 +65,9 @@ class Picker extends Component {
             this.onPressPicker(values, labels);
           }}>
 
-          <View
-            style={[
-              styles.flexDirectionRow,
-              styles.alignItemsCenter,
-            ]}>
-
             {
               this.renderPickerComponent()
             }
-
-          </View>
 
         </TouchableNativeFeedback>
       </View>
@@ -84,7 +76,19 @@ class Picker extends Component {
 
   renderPickerComponent() {
     if (this.props.dropDownComponent) {
-      return this.props.dropDownComponent;
+      return (
+        <View
+          style={[
+            styles.flexDirectionRow,
+            styles.alignItemsCenter,
+          ]}>
+
+          {
+            this.props.dropDownComponent
+          }
+
+        </View>
+      );
     } else {
       return this.getDefaultPickerComponent();
     }
@@ -92,24 +96,30 @@ class Picker extends Component {
 
   getDefaultPickerComponent() {
     return (
-      <Text
+      <View
         style={[
-          theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
-          this.props.styles.label,
+          styles.flexDirectionRow,
+          styles.alignItemsCenter,
         ]}>
-        {
-          labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
-        }
-    </Text>
+          <Text
+            style={[
+              theme == THEMES.LIGHT ? styles.fontBlack : styles.fontWhite,
+              this.props.styles.label,
+            ]}>
+            {
+              labels[values.indexOf(this.state.selectedValue ? this.state.selectedValue : this.props.selectedValue)]
+            }
+        </Text>
 
-    <Image
-      source={dropDownImageSource}
-      style={[
-        styles.dropDownImage,
-        styles.marginLeft5,
-        this.props.styles.icon,
-      ]}
-      />
+        <Image
+          source={dropDownImageSource}
+          style={[
+            styles.dropDownImage,
+            styles.marginLeft5,
+            this.props.styles.icon,
+          ]}
+          />
+        </View>
     );
   }
 
