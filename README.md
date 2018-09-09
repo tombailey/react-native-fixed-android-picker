@@ -95,7 +95,7 @@ Alternatively, we have provided support for passing a styles prop which can chan
 
 Or you can even render your own custom view for the dropdown:
 ```javascript
-const renderCustomView = (labels) => {
+const renderCustomView = (labels, values) => {
   //TODO: do something with the labels
   return (
     <View />
